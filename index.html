@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конкурс фотографий</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #89CFF0, #4682B4);
+            color: #fff;
+            text-align: center;
+            padding: 40px;
+            margin: 0;
+            transition: background 2s;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            color: #d9f9ff;
+        }
+
+        .contestant {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .contestant div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .contestant div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #fff;
+            transition: transform 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+        }
+
+        #voteBtn {
+            padding: 15px 30px;
+            font-size: 1.4em;
+            cursor: pointer;
+            background: #4682B4;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #voteBtn:hover {
+            background: #36648B;
+            transform: scale(1.05);
+        }
+
+        #hackingScreen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            color: #00ff00;
+            
+            text-shadow: 0 0 5px #00ff00;
+            padding: 20px;
+            white-space: pre-wrap;
+            overflow: hidden;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .contestant {
+                gap: 20px;
+            }
+
+            img {
+                width: 150px;
+                height: 150px;
+            }
+
+            #voteBtn {
+                padding: 12px 25px;
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+
+            .contestant {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            img {
+                width: 130px;
+                height: 130px;
+            }
+
+            #voteBtn {
+                padding: 10px 20px;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>"Lensify"</h1>
+    <p>Проголосуй за лучшую!</p>
+    <div class="contestant" id="contestants">
+        <div><img src="images/5429629812756051274.jpg" alt="Участник 1">
+            <p>Андрей Смоленский</p>
+        </div>
+        <div><img src="images/girl.jpg" alt="Участник 2">
+            <p>Мария Тихонова</p>
+        </div>
+        <div><img src="images/me.jpg" alt="Участник 3">
+            <p>Наиля Умарова</p>
+        </div>
+    </div>
+    <button id="voteBtn">Голосовать</button>
+    <div id="hackingScreen"></div>
+
+    <script>
+        // Добавляем аудио
+        let audio = new Audio('haking.mp3');  // Укажите путь к вашему аудиофайлу
+
+        document.getElementById('voteBtn').addEventListener('click', function () {
+            // Воспроизведение аудиофайла
+            audio.play();
+            document.querySelector('h1').style.display = 'none';
+            document.querySelector('p').style.display = 'none';
+
+            // Обновление страницы после голосования
+            document.getElementById('contestants').innerHTML = '<p></p>';
+            document.body.style.background = 'black';
+            document.getElementById('voteBtn').style.display = 'none';
+            let hackScreen = document.getElementById('hackingScreen');
+            hackScreen.style.display = 'block';
+
+            // Сообщения для "хакерской" страницы
+            let messages = [
+                '[Инициализация] Подключение к серверу...',
+                '[Ошибка] Доступ запрещён. Попытка обхода...',
+                '[Загрузка данных] IP: 192.168.1.1',
+                '[Загрузка данных] Доступ к карте: Разрешено',
+                '[Внимание] Передача данных банковской карты... ОШИБКА',
+                '[Попытка 2] Подключение к анонимному серверу...',
+                '[Успех] Данные отправлены!',
+                '1 АПРЕЛЯ! ВАС РАЗЫГРАЛИ!'
+            ];
+
+            let i = 0;
+            function showMessage() {
+                if (i < messages.length) {
+                    hackScreen.innerHTML += messages[i] + '\n';
+                    i++;
+                    setTimeout(showMessage, Math.random() * 2000 + 500);
+                }
+            }
+
+            showMessage();
+        });
+    </script>
+</body>
+
+</html>
